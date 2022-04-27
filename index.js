@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 require('dotenv').config();
 const app = express();
@@ -31,6 +31,14 @@ async function run() {
             res.send(activities);
         })
 
+        // Get Volunteer info
+        app.get("/volunteerInfo", async(req, res) => {
+            const query = req.query;
+            const cursor = volunteerInfo.find(query);
+            const volunteers = await cursor.toArray();
+            res.send(volunteers)
+        })
+
         // POST a activity in the database
         app.post("/activity", async (req, res) => {
             const activity = req.body;
@@ -42,6 +50,14 @@ async function run() {
         app.post("/volunteerInfo", async (req, res) => {
             const info = req.body;
             const result = await volunteerInfo.insertOne(info);
+            res.send(result);
+        })
+
+        // Delete
+        app.delete("/volunteerInfo/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await volunteerInfo.deleteOne(query);
             res.send(result);
         })
     }
