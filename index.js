@@ -29,6 +29,13 @@ async function run() {
             const activities = await cursor.toArray();
             res.send(activities);
         })
+
+        // POST a activity in the database
+        app.post("/activity", async (req, res) => {
+            const activity = req.body;
+            const result = await activityCollection.insertOne(activity);
+            res.send(result);
+        })
     }
     finally {
 
