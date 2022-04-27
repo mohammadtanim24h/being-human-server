@@ -21,6 +21,7 @@ async function run() {
     try {
         await client.connect();
         const activityCollection = client.db("beingHuman").collection("volunteerActivities");
+        const volunteerInfo = client.db("beingHuman").collection("volunteerInfo");
         
         // Get all activities 
         app.get("/activities", async (req, res) => {
@@ -34,6 +35,13 @@ async function run() {
         app.post("/activity", async (req, res) => {
             const activity = req.body;
             const result = await activityCollection.insertOne(activity);
+            res.send(result);
+        })
+
+        // POST volunteer info in the database
+        app.post("/volunteerInfo", async (req, res) => {
+            const info = req.body;
+            const result = await volunteerInfo.insertOne(info);
             res.send(result);
         })
     }
