@@ -60,6 +60,10 @@ async function run() {
             const result = await volunteerInfo.deleteOne(query);
             res.send(result);
         })
+
+        app.get("/check", (req, res) => {
+            res.send("Just checking if everything is okay")
+        })
     }
     finally {
 
